@@ -1,7 +1,8 @@
 #include "I2C_Device.h"
 
-I2C_Device::I2C_Device(uint8_t address, uint8_t whoAmI) {
+I2C_Device::I2C_Device(uint8_t address, uint8_t whoAmIReg, uint8_t whoAmI) {
   this->deviceAddress = address;
+  this->whoAmIReg = whoAmIReg;
   this->whoAmI = whoAmI;
 };
 
@@ -91,5 +92,5 @@ void I2C_Device::writeMultiple(uint8_t reg, uint8_t *buffer, uint8_t bytesToWrit
  * @returns whether the id check was valid
  */
 bool I2C_Device::checkID() {
-  return this->whoAmI == read(LSM_WHO_AM_I_REG);
+  return this->whoAmI == read(this->whoAmIReg);
 }
