@@ -32,12 +32,6 @@ void setup() {
   Serial.println(lsmDevice.read(CTRL2_G_REG_LSM), BIN);
 
 
-  Serial.println(lsmDevice.gyroRange);
-  Serial.println(lsmDevice.read(CTRL2_G_REG_LSM), BIN);
-
-
-
-
   delay(1000);
 
 
@@ -54,7 +48,7 @@ void loop() {
   ThreeAxisDouble gyroscope;
   lsmDevice.pollGyro(&gyroscope);
 
-  Serial.println("X: " + String(gyroscope.x, 3) + ", Y: " + String(gyroscope.y, 3) + ", Z: " + String(gyroscope.z, 3));
+  Serial.println("Pitch: " + String(gyroscope.x, 3) + ", Roll: " + String(gyroscope.y, 3) + ", Yaw: " + String(gyroscope.z, 3));
 
 
 }
