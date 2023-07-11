@@ -1,14 +1,14 @@
 #include "LSM6DS33.h"
 
-bool LSM6DS33::init(uint8_t accelODR, double accelRange, uint8_t gyroODR, double gyroDPS) {
+bool LSM6DS33::init(uint8_t accelODR, double accelRange, uint8_t gyroODR, double gyroRange) {
   if (!I2C_Device::init())
     return false;
 
   setAccelDataRate(accelODR);
   setAccelSenseRange(accelRange);
 
-  // setGryoDataRate(gyroODR);
-  // setGyroSenseRange(gyroDPSRange);
+  setGryoDataRate(gyroODR);
+  setGyroSenseRange(gyroRange);
 
   this->gyroRaw.x = 0;
   this->gyroRaw.y = 0;
@@ -79,10 +79,16 @@ void LSM6DS33::setGyroSenseRange(double dps) {
       reg.fs_g = GYRO_DPS_1000_BIN_LSM;
     else if (dps == GYRO_DPS_2000_LSM)
       reg.fs_g = GYRO_DPS_2000_BIN_LSM;
+    else {
+      Serial.println("here");
     }
+  }
 
   this->write(CTRL2_G_REG_LSM, reg.full);
-  this->gyroDPSRange = dps;
+
+
+
+  this->gyroRange = dps;
 }
 
 
@@ -100,9 +106,9 @@ void LSM6DS33::pollGyro(ThreeAxisDouble *data) {
   this->gyroRaw.y = buffer[3] << 8 | buffer[2];
   this->gyroRaw.z = buffer[5] << 8 | buffer[4];
 
-  this->gyroScaled.x = (gyroRaw.x * this->gyroDPSRange * DPS_TO_RDS) / 1000;
-  this->gyroScaled.y = (gyroRaw.y * this->gyroDPSRange * DPS_TO_RDS) / 1000;
-  this->gyroScaled.z = (gyroRaw.z * this->gyroDPSRange * DPS_TO_RDS) / 1000;
+  this->gyroScaled.x = (gyroRaw.x * this->gyroRange * DPS_TO_RDS) / 1000;
+  this->gyroScaled.y = (gyroRaw.y * this->gyroRange * DPS_TO_RDS) / 1000;
+  this->gyroScaled.z = (gyroRaw.z * this->gyroRange * DPS_TO_RDS) / 1000;
 
   data->x = this->gyroScaled.x;
   data->y = this->gyroScaled.y;
