@@ -31,6 +31,11 @@ void setup() {
   Serial.println(lsmDevice.read(CTRL1_XL_REG_LSM), BIN);
 
 
+  Serial.println(lsmDevice.accelSenseRange);
+  Serial.println(lsmDevice.read(CTRL1_XL_REG_LSM), BIN);
+  delay(1000);
+
+
 
   // uint8_t value;
   // value = lsmDevice.read(0x0B);
@@ -47,14 +52,14 @@ void setup() {
 
 void loop() {
 
-  ThreeAxisFloat accelerometer;
+  ThreeAxisDouble accelerometer;
   lsmDevice.pollAccel(&accelerometer);
 
-  // Serial.println("X: " + String(accelerometer.x, 3) + ", Y: " + String(accelerometer.y, 3) + ", Z: " + String(accelerometer.z, 3));
+  Serial.println("X: " + String(accelerometer.x, 3) + ", Y: " + String(accelerometer.y, 3) + ", Z: " + String(accelerometer.z, 3));
 
   // delay(1000);
 
-  readAccelX();
+  // readAccelX();
 
 
 }
@@ -62,15 +67,21 @@ void loop() {
 
 void readAccelX() {
   uint8_t high = lsmDevice.read(OUTX_H_XL_LSM);
-  uint8_t low = lsmDevice.read(OUTX_H_XL_LSM);
-  uint16_t tot = high << 8 | low;
-  bool neg = high >> 7 & 0b1;
-  Serial.println(neg);
-  tot = ~tot;
-  tot = tot + 1;
-  tot = tot * (neg ? -1 : 1);
-  float scaled = (lsmDevice.accelSenseRange * tot * GRAVITY_ACCEL) / 1000;
-  // Serial.println(scaled);
+  uint8_t low = lsmDevice.read(OUTX_L_XL_LSM);
+
+
+  int16_t tot = high << 8 | low;
+
+  // Serial.println(tot);
+
+
+  // bool neg = high >> 7 & 0b1;
+  // Serial.println(neg);
+  // tot = ~tot;
+  // tot = tot + 1;
+  // tot = tot * (neg ? -1 : 1);
+  double scaled = (lsmDevice.accelSenseRange * tot * GRAVITY_ACCEL) / 1000;
+  Serial.println(scaled);
 }
 
 

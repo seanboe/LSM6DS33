@@ -14,16 +14,16 @@
 
 
 typedef struct {
-  uint16_t x;        // For Gyro, pitch
-  uint16_t y;        // For Gyro, roll
-  uint16_t z;        // For Gyro, yaw
+  int16_t x;        // For Gyro, pitch
+  int16_t y;        // For Gyro, roll
+  int16_t z;        // For Gyro, yaw
 } ThreeAxisInt;
 
 typedef struct {
-  float x;        // For Gyro, pitch
-  float y;        // For Gyro, roll
-  float z;        // For Gyro, yaw
-} ThreeAxisFloat;
+  double x;        // For Gyro, pitch
+  double y;        // For Gyro, roll
+  double z;        // For Gyro, yaw
+} ThreeAxisDouble;
 
 
 class LSM6DS33 : public I2C_Device {
@@ -31,16 +31,16 @@ class LSM6DS33 : public I2C_Device {
   public:
     LSM6DS33() : I2C_Device(LSM_ADDRESS, whoAmIReg=LSM_WHO_AM_I_REG, whoAmI=LSM_WHO_AM_I) {};
  
-    bool init(float accelRange=ACCEL_STVTY_4_LSM, uint8_t accelODR=ACCEL_ODR_104_BIN_LSM, float gyroDPS=GYRO_DPS_2000_LSM, uint8_t gyroODR=GYRO_ODR_104_BIN_LSM);
+    bool init(uint8_t accelODR=ACCEL_ODR_104_BIN_LSM, double accelRange=ACCEL_STVTY_4_LSM, uint8_t gyroODR=GYRO_ODR_104_BIN_LSM, double gyroDPS=GYRO_DPS_2000_LSM);
 
     void setAccelDataRate(uint8_t accelODR);
-    void setAccelSenseRange(float range);
+    void setAccelSenseRange(double range);
 
     void setGryoDataRate(uint8_t gyroODR);
-    void setGyroSenseRange(float dps);
+    void setGyroSenseRange(double dps);
 
-    void pollGyro(ThreeAxisFloat *data);
-    void pollAccel(ThreeAxisFloat *data);
+    void pollGyro(ThreeAxisDouble *data);
+    void pollAccel(ThreeAxisDouble *data);
 
     bool tempAvailable();
     bool gyroAvailable();
@@ -48,9 +48,8 @@ class LSM6DS33 : public I2C_Device {
 
     void reset();
     
-
+    double accelSenseRange;
     float gyroDPSRange;
-    float accelSenseRange;
 
   private:
     void dataAvailable(uint8_t *buffer);
@@ -59,9 +58,9 @@ class LSM6DS33 : public I2C_Device {
     // float accelSenseRange;
 
     ThreeAxisInt gyroRaw;
-    ThreeAxisFloat gyroScaled;
+    ThreeAxisDouble gyroScaled;
     ThreeAxisInt accelRaw;
-    ThreeAxisFloat accelScaled;
+    ThreeAxisDouble accelScaled;
 
 };
 

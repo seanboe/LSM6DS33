@@ -1,6 +1,6 @@
 #include "LSM6DS33.h"
 
-bool LSM6DS33::init(float accelRange, uint8_t accelODR, float gyroDPS, uint8_t gyroODR) {
+bool LSM6DS33::init(uint8_t accelODR, double accelRange, uint8_t gyroODR, double gyroDPS) {
   if (!I2C_Device::init())
     return false;
 
@@ -62,7 +62,7 @@ void LSM6DS33::setGryoDataRate(uint8_t gyroODR) {
   this->write(CTRL2_G_REG_LSM, reg.full);
 }
 
-void LSM6DS33::setGyroSenseRange(float dps) {
+void LSM6DS33::setGyroSenseRange(double dps) {
   Ctrl2_g_reg_LSM reg;
 
   reg.full = this->read(CTRL2_G_REG_LSM);
@@ -87,7 +87,7 @@ void LSM6DS33::setGyroSenseRange(float dps) {
 
 
 
-void LSM6DS33::pollGyro(ThreeAxisFloat *data) {
+void LSM6DS33::pollGyro(ThreeAxisDouble *data) {
   uint8_t buffer[6];
   buffer[0] = this->read(OUTX_L_G_LSM);
   buffer[1] = this->read(OUTX_H_G_LSM);
@@ -117,7 +117,7 @@ void LSM6DS33::setAccelDataRate(uint8_t accelODR) {
   this->write(CTRL1_XL_REG_LSM, reg.full);
 }
 
-void LSM6DS33::setAccelSenseRange(float range) {
+void LSM6DS33::setAccelSenseRange(double range) {
   Ctrl1_xl_reg_LSM reg;
 
   reg.full = this->read(CTRL1_XL_REG_LSM);
@@ -134,10 +134,9 @@ void LSM6DS33::setAccelSenseRange(float range) {
   this->write(CTRL1_XL_REG_LSM, reg.full);
 
   this->accelSenseRange = range;
-  Serial.println(this->accelSenseRange);
 }
 
-void LSM6DS33::pollAccel(ThreeAxisFloat *data) {
+void LSM6DS33::pollAccel(ThreeAxisDouble *data) {
   uint8_t buffer[6];
   buffer[0] = this->read(OUTX_L_XL_LSM);
   buffer[1] = this->read(OUTX_H_XL_LSM);
@@ -148,7 +147,6 @@ void LSM6DS33::pollAccel(ThreeAxisFloat *data) {
 
 
   this->accelRaw.x = buffer[1] << 8 | buffer[0];
-  // Serial.println(accelRaw.x, BIN);
   this->accelRaw.y = buffer[3] << 8 | buffer[2];
   this->accelRaw.z = buffer[5] << 8 | buffer[4];
 
