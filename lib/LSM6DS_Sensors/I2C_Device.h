@@ -7,7 +7,7 @@
 
 class I2C_Device {
   public:
-    I2C_Device(uint8_t address, uint8_t whoAmI);
+    I2C_Device(uint8_t address, uint8_t whoAmIReg, uint8_t whoAmI);
 
     bool init();
     uint8_t read(uint8_t reg, unsigned long timeout=50);
@@ -20,7 +20,7 @@ class I2C_Device {
   protected:
     uint8_t deviceAddress = 0;
     uint8_t whoAmI = 0;
-
+    uint8_t whoAmIReg = 0;
 
 
 };
