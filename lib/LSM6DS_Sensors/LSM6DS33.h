@@ -31,7 +31,7 @@ class LSM6DS33 : public I2C_Device {
   public:
     LSM6DS33() : I2C_Device(LSM_ADDRESS, whoAmIReg=LSM_WHO_AM_I_REG, whoAmI=LSM_WHO_AM_I) {};
  
-    bool init(uint8_t accelODR=ACCEL_ODR_104_BIN_LSM, double accelRange=ACCEL_STVTY_4_LSM, uint8_t gyroODR=GYRO_ODR_104_BIN_LSM, double gyroRange=GYRO_DPS_2000_LSM);
+    bool init(uint8_t accelODR=ACCEL_ODR_832_BIN_LSM, double accelRange=ACCEL_STVTY_16_LSM, uint8_t gyroODR=GYRO_ODR_104_BIN_LSM, double gyroRange=GYRO_DPS_2000_LSM, bool enableTaps=true);
 
     void setAccelDataRate(uint8_t accelODR);
     void setAccelSenseRange(double range);
@@ -39,8 +39,11 @@ class LSM6DS33 : public I2C_Device {
     void setGryoDataRate(uint8_t gyroODR);
     void setGyroSenseRange(double dps);
 
+    void pollTaps(ThreeAxisInt *data);
     void pollGyro(ThreeAxisDouble *data);
     void pollAccel(ThreeAxisDouble *data);
+
+    void enableAccelFilters(uint8_t filter=ACCEL_FILTER_HP_100);
 
     bool tempAvailable();
     bool gyroAvailable();
@@ -52,6 +55,9 @@ class LSM6DS33 : public I2C_Device {
     double gyroRange;
 
   private:
+
+    void initTaps(uint8_t threshold=0b0001);
+
     void dataAvailable(uint8_t *buffer);
 
     // double gyroDPSRange;

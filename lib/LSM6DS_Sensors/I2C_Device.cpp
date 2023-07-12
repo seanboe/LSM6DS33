@@ -7,7 +7,7 @@ I2C_Device::I2C_Device(uint8_t address, uint8_t whoAmIReg, uint8_t whoAmI) {
 };
 
 /**
- * Initialize the I2C bus and verify that the device is connected
+ * @brief Initialize the I2C bus and verify that the device is connected
  * @return Whether initialization ran properly
  */
 bool I2C_Device::init() {
@@ -20,7 +20,7 @@ bool I2C_Device::init() {
 }
 
 /**
- * Read one byte from a register
+ * @brief Read one byte from a register
  * @param reg register address to read
  * @param timeout optional; the time to wait for a receive until timeout
  * @return the value read
@@ -33,7 +33,7 @@ uint8_t I2C_Device::read(uint8_t reg, unsigned long timeout) {
 
 
 /**
- * Read multiple bytes from a register
+ * @brief Read multiple bytes from a register
  * @param reg register address to read
  * @param buffer the buffer to read into
  * @param bytesToRead the number of bytes to read
@@ -64,7 +64,7 @@ bool I2C_Device::readMultiple(uint8_t reg, uint8_t *buffer, uint8_t bytesToRead,
 
 
 /**
- * Write one byte to a register
+ * @brief Write one byte to a register
  * @param reg register address to write to
  * @param value the value to write to the register
  */
@@ -73,7 +73,7 @@ void I2C_Device::write(uint8_t reg, uint8_t value) {
 }
 
 /**
- * Write multiple bytes from a register
+ * @brief Write multiple bytes from a register
  * @param reg register address to write to
  * @param buffer the buffer to write
  * @param bytesToWrite the number of bytes to write
@@ -88,7 +88,7 @@ void I2C_Device::writeMultiple(uint8_t reg, uint8_t *buffer, uint8_t bytesToWrit
 }
 
 /**
- * Checks whether the chip id is what it should be 
+ * @brief Checks whether the chip id is what it should be 
  * @returns whether the id check was valid
  */
 bool I2C_Device::checkID() {

@@ -5,9 +5,6 @@
 
 
 // LOOK AT PEDOMETER LATER
-
-
-
 // Degrees to radians scale factor
 #define DPS_TO_RDS        0.017453
 #define GRAVITY_ACCEL     9.80665
@@ -102,6 +99,12 @@
 #define ACCEL_ODR_1664_BIN_LSM  0b1000
 #define ACCEL_ODR_3328_BIN_LSM  0b1001
 #define ACCEL_ODR_6644_BIN_LSM  0b1010
+
+// ACCELEROMETER FILTER SELECT
+#define ACCEL_FILTER_SLOPE      0b00
+#define ACCEL_FILTER_HP_100     0b01
+#define ACCEL_FILTER_HP_9       0b10
+#define ACCEL_FILTER_HP_400     0b11
 
 
 /**
@@ -208,7 +211,7 @@ typedef union {
 #define TAP_SRC_REG_LSM 0x1C
 typedef union {
   struct {
-    uint8_t zyz_tap : 3;
+    uint8_t xyz_tap : 3;
     uint8_t tap_sign : 1;
     uint8_t double_tap : 1;
     uint8_t single_tap : 1;
@@ -234,6 +237,36 @@ typedef union {
   uint8_t full = 0;
 } Status_reg_LSM;
 
+
+/**
+ * @brief Register used to enable tap and pedometer detection
+ */
+#define TAP_CFG_REG_LSM 0x58
+typedef union {
+  struct {
+    uint8_t LIR : 1;
+    uint8_t tap_xyz : 3;
+    uint8_t slope_fds : 1;
+    uint8_t tilt_en : 1;
+    uint8_t pedo_en : 1;
+    uint8_t timer_en : 1;
+  };
+  uint8_t full = 0;
+} Tap_cfg_reg_LSM;
+
+
+/**
+ * @brief Register used to set tap threshold
+ */
+#define TAP_THS_6D_REG_LSM 0x59
+typedef union {
+  struct {
+    uint8_t tap_ths : 5;
+    uint8_t sixd_ths : 2;
+    uint8_t d4d_en : 1;
+  };
+  uint8_t full = 0;
+} Tap_ths_6d_reg_LSM;
 
 
 

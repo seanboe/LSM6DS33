@@ -29,10 +29,9 @@ void setup() {
   }
 
   Serial.println(lsmDevice.read(LSM_WHO_AM_I_REG));
-  Serial.println(lsmDevice.read(CTRL2_G_REG_LSM), BIN);
+  // Serial.println(lsmDevice.read(CTRL2_G_REG_LSM), BIN);
 
-
-  delay(1000);
+  delay(5000);
 
 
 
@@ -46,10 +45,15 @@ void loop() {
   Serial.println("X: " + String(accelerometer.x, 3) + ", Y: " + String(accelerometer.y, 3) + ", Z: " + String(accelerometer.z, 3));
 
   ThreeAxisDouble gyroscope;
-  lsmDevice.pollGyro(&gyroscope);
+  // lsmDevice.pollGyro(&gyroscope);
 
-  Serial.println("Pitch: " + String(gyroscope.x, 3) + ", Roll: " + String(gyroscope.y, 3) + ", Yaw: " + String(gyroscope.z, 3));
+  // Serial.println("Pitch: " + String(gyroscope.x, 3) + ", Roll: " + String(gyroscope.y, 3) + ", Yaw: " + String(gyroscope.z, 3));
 
+  ThreeAxisInt taps;
+  lsmDevice.pollTaps(&taps);
+  // Serial.println("X: " + String(taps.x, 3) + ", Y: " + String(taps.y, 3) + ", Z: " + String(taps.z, 3));
+
+  delay(10);
 
 }
 
