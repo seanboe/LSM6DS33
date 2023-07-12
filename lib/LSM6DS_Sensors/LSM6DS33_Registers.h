@@ -11,7 +11,9 @@
 
 // THERMOMETER
 #define OUT_TEMP_L_LSM    0x20
-#define OUT_TEMP_H_LSM    0x20
+#define OUT_TEMP_H_LSM    0x21
+
+#define TEMP_SENSITIVITY  16
 
 // GYROSCOPE
 

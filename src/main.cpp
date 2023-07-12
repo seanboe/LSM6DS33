@@ -39,13 +39,15 @@ void setup() {
 
 void loop() {
 
+  Serial.println(lsmDevice.pollTemp());
+
   ThreeAxisDouble accelerometer;
   lsmDevice.pollAccel(&accelerometer);
 
-  Serial.println("X: " + String(accelerometer.x, 3) + ", Y: " + String(accelerometer.y, 3) + ", Z: " + String(accelerometer.z, 3));
+  // Serial.println("X: " + String(accelerometer.x, 3) + ", Y: " + String(accelerometer.y, 3) + ", Z: " + String(accelerometer.z, 3));
 
   ThreeAxisDouble gyroscope;
-  // lsmDevice.pollGyro(&gyroscope);
+  lsmDevice.pollGyro(&gyroscope);
 
   // Serial.println("Pitch: " + String(gyroscope.x, 3) + ", Roll: " + String(gyroscope.y, 3) + ", Yaw: " + String(gyroscope.z, 3));
 
@@ -58,37 +60,37 @@ void loop() {
 }
 
 
-void readAccelX() {
-  uint8_t high = lsmDevice.read(OUTX_H_XL_LSM);
-  uint8_t low = lsmDevice.read(OUTX_L_XL_LSM);
+// void readAccelX() {
+//   uint8_t high = lsmDevice.read(OUTX_H_XL_LSM);
+//   uint8_t low = lsmDevice.read(OUTX_L_XL_LSM);
 
 
-  int16_t tot = high << 8 | low;
+//   int16_t tot = high << 8 | low;
 
-  // Serial.println(tot);
+//   // Serial.println(tot);
 
 
-  // bool neg = high >> 7 & 0b1;
-  // Serial.println(neg);
-  // tot = ~tot;
-  // tot = tot + 1;
-  // tot = tot * (neg ? -1 : 1);
-  double scaled = (lsmDevice.accelSenseRange * tot * GRAVITY_ACCEL) / 1000;
-  Serial.println(scaled);
-}
+//   // bool neg = high >> 7 & 0b1;
+//   // Serial.println(neg);
+//   // tot = ~tot;
+//   // tot = tot + 1;
+//   // tot = tot * (neg ? -1 : 1);
+//   double scaled = (lsmDevice.accelSenseRange * tot * GRAVITY_ACCEL) / 1000;
+//   Serial.println(scaled);
+// }
 
-void readGyroX() {
-  uint8_t high = lsmDevice.read(OUTX_H_G_LSM);
-  uint8_t low = lsmDevice.read(OUTX_L_G_LSM);
+// void readGyroX() {
+//   uint8_t high = lsmDevice.read(OUTX_H_G_LSM);
+//   uint8_t low = lsmDevice.read(OUTX_L_G_LSM);
 
-  int16_t tot = high << 8 | low;
-  // Serial.print(tot, BIN);
-  // Serial.print("      ");
+//   int16_t tot = high << 8 | low;
+//   // Serial.print(tot, BIN);
+//   // Serial.print("      ");
 
-  double scaled = (lsmDevice.gyroRange * DPS_TO_RDS * tot) / 1000;
-  Serial.println(scaled);
+//   double scaled = (lsmDevice.gyroRange * DPS_TO_RDS * tot) / 1000;
+//   Serial.println(scaled);
 
-}
+// }
 
 
 

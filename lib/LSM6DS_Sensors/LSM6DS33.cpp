@@ -78,6 +78,19 @@ void LSM6DS33::reset() {
   this->write(CTRL3_C_REG_LSM, reg.full);
 }
 
+
+double LSM6DS33::pollTemp() {
+  uint8_t buffer[2];
+  buffer[0] = this->read(OUT_TEMP_L_LSM);
+  buffer[1] = this->read(OUT_TEMP_H_LSM);
+  this->thermometerRaw = buffer[1] << 8 | buffer[0];
+
+  this->thermometerScaled = ((double)this->thermometerRaw / TEMP_SENSITIVITY) + 25.0;
+
+  return this->thermometerScaled;
+}
+
+
 /**
  * @brief Sets the gyroscope ODR (output data rate)
  * @param gyroODR The ODR you want

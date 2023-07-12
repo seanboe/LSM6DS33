@@ -39,9 +39,10 @@ class LSM6DS33 : public I2C_Device {
     void setGryoDataRate(uint8_t gyroODR);
     void setGyroSenseRange(double dps);
 
-    void pollTaps(ThreeAxisInt *data);
+    double pollTemp();
     void pollGyro(ThreeAxisDouble *data);
     void pollAccel(ThreeAxisDouble *data);
+    void pollTaps(ThreeAxisInt *data);
 
     void enableAccelFilters(uint8_t filter=ACCEL_FILTER_HP_100);
 
@@ -50,9 +51,6 @@ class LSM6DS33 : public I2C_Device {
     bool accelAvailable();
 
     void reset();
-    
-    double accelSenseRange;
-    double gyroRange;
 
   private:
 
@@ -60,9 +58,11 @@ class LSM6DS33 : public I2C_Device {
 
     void dataAvailable(uint8_t *buffer);
 
-    // double gyroDPSRange;
-    // float accelSenseRange;
+    double accelSenseRange;
+    double gyroRange;
 
+    double thermometerScaled;
+    int16_t thermometerRaw;
     ThreeAxisInt gyroRaw;
     ThreeAxisDouble gyroScaled;
     ThreeAxisInt accelRaw;
